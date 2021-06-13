@@ -57,10 +57,6 @@ def calcDet(matrix):
 
 def invertMatrix(matrix):
     determinant = calcDet(matrix)
-    if len(matrix) == 2:
-        return [[matrix[1][1] / determinant, -1 * matrix[0][1] / determinant],
-                [-1 * matrix[1][0] / determinant], matrix[0][0] / determinant]
-
     inverse = []
     for i in range(len(matrix)):
         inverseRow = []
@@ -130,21 +126,6 @@ def hasDominantDiagonal(matrix):
     return True
 
 
-def swap_row(matrix, i, j):
-    temp = matrix[i]
-    matrix[i] = matrix[j]
-    matrix[j] = temp
-
-
-def pivoting(matrix, b):
-    for i in range(len(matrix)):
-        for j in range(i + 1, len(matrix)):
-            if abs(matrix[i][i]) < abs(matrix[j][i]):
-                swap_row(matrix, i, j)
-                swap_row(b, i, j)
-
-
-
 def gaussSeidelMethod(matrix, b):
     Xr, Yr, Zr, condition, count, epsilon = 0, 0, 0, 1, 0, 0.00001
 
@@ -168,9 +149,8 @@ def driver(matrix, b):
 
     print("\n********Gauss Elimination Method*********")
     print('X = {0}, Y = {1}, Z = {2}'.format(vector_mul(b, invertMatrix(matrix))[0][0],
-                                       vector_mul(b, invertMatrix(matrix))[0][1],
-                                       vector_mul(b, invertMatrix(matrix))[0][2]))
-
+                                             vector_mul(b, invertMatrix(matrix))[0][1],
+                                             vector_mul(b, invertMatrix(matrix))[0][2]))
 
     print("\n****Gauss Seidel Method****")
     gaussSeidelMethod(matrix, b)
@@ -178,8 +158,6 @@ def driver(matrix, b):
         print("Converge !")
     else:
         print("Not converge...")
-
-
 
 
 A = [[10, 8, 1], [4, 10, -5], [5, 1, 10]]

@@ -155,7 +155,7 @@ def jacobiMethod(matrix, b):
         Zr1 = (b[2] - matrix[2][1] * Yr - matrix[2][0] * Xr) / matrix[2][2]
         condition = abs(Xr1 - Xr)
         Xr, Yr, Zr = round(Xr1, 6), round(Yr1, 6), round(Zr1, 6)
-    #print("{0} Z = {1}, Y = {2}, X = {3}".format(count, Zr, Yr, Xr))
+        print("{0} Z = {1}, Y = {2}, X = {3}".format(count, Zr, Yr, Xr))
     return count, Zr, Yr, Xr
 
 
@@ -170,7 +170,7 @@ def gaussSeidelMethod(matrix, b):
         Zr = (b[2] - matrix[2][1] * Yr - matrix[2][0] * Xr) / matrix[2][2]
         condition = abs(Xr - Xr_1)
         Xr, Yr, Zr = round(Xr, 6), round(Yr, 6), round(Zr, 6)
-    #print("{0} Z = {1}, Y = {2}, X = {3}".format(count, Zr, Yr, Xr))
+        print("{0} Z = {1}, Y = {2}, X = {3}".format(count, Zr, Yr, Xr))
     return count, Zr, Yr, Xr
 
 
@@ -181,16 +181,14 @@ def driver(matrix, b):
         print("\nDominant Diagonal Matrix: No")
 
     print("\n********Jacobi Method*********")
-    c_Jacobi, z_Jacobi, y_Jacobi, x_Jacobi = jacobiMethod(matrix, b)[0], jacobiMethod(matrix, b)[1], jacobiMethod(matrix, b)[2], jacobiMethod(matrix, b)[3]
-    print("Iterations: {0}, Z = {1}, Y = {2}, X = {3}".format(c_Jacobi, z_Jacobi, y_Jacobi, x_Jacobi))
+    c_Jacobi = jacobiMethod(matrix, b)[0]
     if norma(jacobi_G(D(matrix), L(matrix), U(matrix))) < 1:
         print("Converge !")
     else:
         print("Not converge...")
 
     print("\n****Gauss Seidel Method****")
-    c_Gauss, z_Gauss, y_Gauss, x_Gauss = gaussSeidelMethod(matrix, b)[0], gaussSeidelMethod(matrix, b)[1], gaussSeidelMethod(matrix, b)[2], gaussSeidelMethod(matrix, b)[3]
-    print("Iterations: {0}, Z = {1}, Y = {2}, X = {3}".format(c_Gauss, z_Gauss, y_Gauss, x_Gauss))
+    c_Gauss = gaussSeidelMethod(matrix, b)[0]
     if norma(gauss_G(D(matrix), L(matrix), U(matrix))) < 1:
         print("Converge !")
     else:

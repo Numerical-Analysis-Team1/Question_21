@@ -8,6 +8,14 @@ def precision(num):
         return num
 
 
+def vector_mul(vector, matrix):
+    result = [[0] * len(matrix)]
+    for i in range(len(matrix)):
+        for j in range(len(matrix)):
+            result[0][i] += matrix[i][j] * vector[j]
+    return result
+
+
 def MatrixAddition(matrix_1, matrix_2):
     return [[matrix_1[i][k] + matrix_2[i][k] for k in range(len(matrix_1))] for i in range(len(matrix_1))]
 
@@ -101,14 +109,6 @@ def gauss_G(D, L, U):
     return G
 
 
-def jacobi_G(D, L, U):
-    G = matrixMultiply(invertMatrix(D), MatrixAddition(L, U))
-    for i in range(len(G)):
-        for j in range(len(G)):
-            G[i][j] = -G[i][j]
-    return G
-
-
 def norma(G):
     m_sum = 0
     for i in range(len(G)):
@@ -145,20 +145,6 @@ def pivoting(matrix, b):
 
 
 
-def jacobiMethod(matrix, b):
-    Xr, Yr, Zr, condition, count, epsilon = 0, 0, 0, 1, 0, 0.00001
-
-    while condition > epsilon:
-        count += 1
-        Xr1 = (b[0] - matrix[0][1] * Yr - matrix[0][2] * Zr) / matrix[0][0]
-        Yr1 = (b[1] - matrix[1][0] * Xr - matrix[1][2] * Zr) / matrix[1][1]
-        Zr1 = (b[2] - matrix[2][1] * Yr - matrix[2][0] * Xr) / matrix[2][2]
-        condition = abs(Xr1 - Xr)
-        Xr, Yr, Zr = round(Xr1, 6), round(Yr1, 6), round(Zr1, 6)
-        print("{0} Z = {1}, Y = {2}, X = {3}".format(count, Zr, Yr, Xr))
-    return count, Zr, Yr, Xr
-
-
 def gaussSeidelMethod(matrix, b):
     Xr, Yr, Zr, condition, count, epsilon = 0, 0, 0, 1, 0, 0.00001
 
@@ -170,7 +156,7 @@ def gaussSeidelMethod(matrix, b):
         Zr = (b[2] - matrix[2][1] * Yr - matrix[2][0] * Xr) / matrix[2][2]
         condition = abs(Xr - Xr_1)
         Xr, Yr, Zr = round(Xr, 6), round(Yr, 6), round(Zr, 6)
-        print("{0} Z = {1}, Y = {2}, X = {3}".format(count, Zr, Yr, Xr))
+        print("{0} X = {1}, Y = {2}, Z = {3}".format(count, Xr, Yr, Zr))
     return count, Zr, Yr, Xr
 
 
@@ -180,25 +166,18 @@ def driver(matrix, b):
     else:
         print("\nDominant Diagonal Matrix: No")
 
-    print("\n********Jacobi Method*********")
-    c_Jacobi = jacobiMethod(matrix, b)[0]
-    if norma(jacobi_G(D(matrix), L(matrix), U(matrix))) < 1:
-        print("Converge !")
-    else:
-        print("Not converge...")
+    print("\n********Gauss Elimination Method*********")
+    print('X = {0}, Y = {1}, Z = {2}'.format(vector_mul(b, invertMatrix(matrix))[0][0],
+                                       vector_mul(b, invertMatrix(matrix))[0][1],
+                                       vector_mul(b, invertMatrix(matrix))[0][2]))
+
 
     print("\n****Gauss Seidel Method****")
-    c_Gauss = gaussSeidelMethod(matrix, b)[0]
+    gaussSeidelMethod(matrix, b)
     if norma(gauss_G(D(matrix), L(matrix), U(matrix))) < 1:
         print("Converge !")
     else:
         print("Not converge...")
-
-    if c_Jacobi > c_Gauss:
-        print('\nGauss-Seidel method found the result faster.')
-    else:
-        print('\nJacobi method found the result faster.')
-
 
 
 
